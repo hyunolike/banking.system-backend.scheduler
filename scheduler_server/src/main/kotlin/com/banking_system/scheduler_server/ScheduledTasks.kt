@@ -1,8 +1,6 @@
 package com.banking_system.scheduler_server
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.http.ResponseEntity
+import com.banking_system.scheduler_server.aspects.RecordAutoGetAPI
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
@@ -16,6 +14,7 @@ import java.net.URI
 class ScheduledTasks {
 
     // 작업 예약
+    @RecordAutoGetAPI
     @Scheduled(cron = "0/10 * * * * *")
     fun taskScheduler() {
          var uri: URI = UriComponentsBuilder
