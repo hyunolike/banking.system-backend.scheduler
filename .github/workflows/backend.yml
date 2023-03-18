@@ -22,7 +22,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: ./api_server
+        working-directory: ./scheduler_server
 
     steps:
     - uses: actions/checkout@v3
@@ -51,6 +51,6 @@ jobs:
         username: ${{ secrets.NCP_USERNAME }}
         password: ${{ secrets.NCP_PASS }}
         port: ${{ secrets.NCP_PORT }}
-        source: api_server/deploy/*.jar
+        source: scheduler_server/deploy/*.jar
         target: ./
         strip_components: 1
