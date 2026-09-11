@@ -1,0 +1,7 @@
+build/
+.gradle/
+.idea/
+*.log
+*.pid
+deploy/*.jar
+src/test/

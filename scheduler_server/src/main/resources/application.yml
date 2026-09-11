@@ -1,1 +1,23 @@
-server.port: 8181
+server:
+  port: ${SERVER_PORT:8181}
+
+spring:
+  application:
+    name: banking-scheduler-server
+
+banking:
+  api:
+    # API 서버 주소. 배포 환경에서 환경변수로 주입한다.
+    base-url: ${API_BASE_URL:http://localhost:8182}
+    # API 서버의 banking.internal.api-key 와 동일한 값이어야 한다.
+    internal-api-key: ${INTERNAL_API_KEY}
+    connect-timeout: ${API_CONNECT_TIMEOUT:2s}
+    read-timeout: ${API_READ_TIMEOUT:5s}
+  scheduler:
+    enabled: ${SCHEDULER_ENABLED:true}
+    # 기본 1분 주기. 예전 10초 주기는 사용자 테이블 전체 조회를 하루 8,640번 유발했다.
+    snapshot-cron: ${SNAPSHOT_CRON:0 * * * * *}
+
+logging:
+  level:
+    com.banking_system.scheduler_server: ${LOG_LEVEL:info}

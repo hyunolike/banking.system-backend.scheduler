@@ -1,0 +1,17 @@
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### Build ###
+build/
+.gradle/
+out/
+
+### 환경 설정 (배포 서버에서만 관리) ###
+.env
+*.env
+
+### OS ###
+.DS_Store

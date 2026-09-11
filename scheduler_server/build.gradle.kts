@@ -11,26 +11,20 @@ group = "com.banking_system"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
-}
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    // spring aop
-    implementation("org.springframework.boot:spring-boot-starter-aop")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.mockk:mockk:1.13.5")
 }
 
 tasks.withType<KotlinCompile> {
@@ -38,6 +32,12 @@ tasks.withType<KotlinCompile> {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "17"
     }
+}
+
+// bootJar 와 함께 만들어지는 실행 불가능한 plain jar 를 끈다.
+// 배포 스크립트가 최신 jar 를 고를 때 이 파일이 선택되면 java -jar 가 기동에 실패한다.
+tasks.named<Jar>("jar") {
+    enabled = false
 }
 
 tasks.withType<Test> {

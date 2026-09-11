@@ -1,0 +1,37 @@
+# ---------------------------------------------------------------------------
+# 스케줄러 단독 실행용.
+#
+#   1) .env 파일 작성
+#   2) docker compose up -d --build
+#
+# .env 예시 (저장소에 커밋하지 않는다)
+#   API_BASE_URL=http://host.docker.internal:8182
+#   INTERNAL_API_KEY=<api 서버와 동일한 값>
+#
+# api 저장소의 docker-compose 와 함께 띄우려면, 먼저 api 쪽을 올린 뒤
+# 아래 networks 블록의 주석을 풀어 같은 네트워크에 붙이고
+# API_BASE_URL 을 http://banking-api:8182 로 지정한다.
+# ---------------------------------------------------------------------------
+services:
+  scheduler:
+    build:
+      context: ./scheduler_server
+    container_name: banking-scheduler
+    environment:
+      API_BASE_URL: ${API_BASE_URL:-http://host.docker.internal:8182}
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY:?INTERNAL_API_KEY 를 .env 에 설정하세요}
+      SNAPSHOT_CRON: ${SNAPSHOT_CRON:-0 * * * * *}
+      SCHEDULER_ENABLED: ${SCHEDULER_ENABLED:-true}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8181:8181"
+    restart: unless-stopped
+    # networks:
+    #   - banking
+
+# networks:
+#   banking:
+#     external: true
+#     name: bankingsystem-backendapi_default
