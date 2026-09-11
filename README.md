@@ -65,6 +65,20 @@ API_BASE_URL=http://localhost:8182 \
 ./gradlew test
 ```
 
+## 4-1. Docker 로 실행
+
+```bash
+cat > .env <<'ENV'
+API_BASE_URL=http://host.docker.internal:8182
+INTERNAL_API_KEY=<api 서버와 동일한 값>
+ENV
+
+docker compose up -d --build
+```
+
+api 저장소의 compose 와 같은 네트워크에서 띄우려면 `docker-compose.yml` 의
+`networks` 주석을 풀고 `API_BASE_URL` 을 `http://banking-api:8182` 로 지정합니다.
+
 ## 5. 운영 시 주의
 
 - **인스턴스를 2대 이상 띄우면 같은 시각에 중복 실행됩니다.** 다중화가 필요해지면
