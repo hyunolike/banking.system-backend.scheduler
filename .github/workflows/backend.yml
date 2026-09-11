@@ -51,7 +51,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: scheduler-server-jar
-          path: scheduler_server/build/libs/*.jar
+          # plain jar 는 Main-Class 가 없어 실행할 수 없다. bootJar 만 올린다.
+          path: |
+            scheduler_server/build/libs/*.jar
+            !scheduler_server/build/libs/*-plain.jar
           retention-days: 1
 
   deploy:

@@ -8,13 +8,14 @@
 #   /home/<user>/scheduler_server/.env  (chmod 600)
 #     API_BASE_URL=http://<api 서버 주소>:8182
 #     INTERNAL_API_KEY=...      # api 서버의 banking.internal.api-key 와 동일한 값
-#     SNAPSHOT_CRON=0 * * * * * # (선택) 수집 주기
+#     SNAPSHOT_CRON='0 * * * * *'   # (선택) 수집 주기 — 공백과 * 때문에 따옴표 필수
 # ---------------------------------------------------------------------------
 set -euo pipefail
 
 APP_NAME="scheduler_server"
 APP_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-JAR_PATH="$(ls -t "${APP_HOME}"/*.jar 2>/dev/null | head -n 1 || true)"
+# plain jar(Main-Class 없음)는 후보에서 제외한다. 섞여 들어와도 기동이 깨지지 않도록.
+JAR_PATH="$(ls -t "${APP_HOME}"/*.jar 2>/dev/null | grep -v -- '-plain\.jar$' | head -n 1 || true)"
 PID_FILE="${APP_HOME}/${APP_NAME}.pid"
 LOG_FILE="${APP_HOME}/${APP_NAME}.log"
 ENV_FILE="${APP_HOME}/.env"

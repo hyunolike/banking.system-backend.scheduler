@@ -34,6 +34,12 @@ tasks.withType<KotlinCompile> {
     }
 }
 
+// bootJar 와 함께 만들어지는 실행 불가능한 plain jar 를 끈다.
+// 배포 스크립트가 최신 jar 를 고를 때 이 파일이 선택되면 java -jar 가 기동에 실패한다.
+tasks.named<Jar>("jar") {
+    enabled = false
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }
